@@ -76,8 +76,13 @@ button {
     font-size: 17px;
     cursor: pointer;
 
-    &:focus {
-        background-color: $primaryColor;
+    @media screen and (min-width: $desktopBreakpoint) {
+        
+        background-color: $greyColor;
+
+        &:hover {
+            background-color: $primaryColor;
+        }
     }
 }
 
