@@ -4,6 +4,7 @@ import passwordIcon from '../assets/images/key.svg';
 import { PublicInput } from '../components/general/PublicInput';
 import { useState } from 'react';
 import { LoginServices } from '../services/LoginServices';
+import {Link, useSearchParams} from 'react-router-dom'
 
 const loginServices = new LoginServices();
 
@@ -14,11 +15,14 @@ export const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    const [searchParams] = useSearchParams();
+    const success = searchParams.get('success');
+
     const doLogin = async () => {
         try {
             setError('');
-            if (!login || !login.trim()
-                || !password || !password.trim()) {
+            if (!login || login.trim().length < 5
+                || !password || password.trim().length < 4) {
                 return setError("Favor informar usuário e password");
             }
 
@@ -40,16 +44,13 @@ export const Login = () => {
         }
     }
 
-    const buttonText = () => {
-        return loading ? "...Carregando" : "Login";
-    }
 
     return (
         <div className="container-public">
             <img src={logo} alt="Logo Devameet" className="logo" />
             <form>
                 {error && <p className="error">{error}</p>}
-
+                {success && <p className='success'>Cadastro efetuado com sucesso, faça seu login.</p>}
 
                 <PublicInput icon={loginIcon} alt="Email" name="Email" type="text"
                     modelValue={login} setValue={setLogin} />
@@ -57,10 +58,10 @@ export const Login = () => {
                 <PublicInput icon={passwordIcon} alt="Senha" name="Senha" type="password"
                     modelValue={password} setValue={setPassword} />
 
-                <button type="button" onClick={doLogin} disabled={loading}>{buttonText()}</button>
+                <button type="button" onClick={doLogin} disabled={loading}>{loading ? "...Carregando" : "Login"}</button>
                 <div className="link">
                     <p>Não possui uma conta?</p>
-                    <a >Faça seu cadastro agora! </a>
+                    <Link to="/register">Faça seu cadastro agora!</Link>
                 </div>
             </form>
         </div>

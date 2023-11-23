@@ -3,21 +3,20 @@
 .container-public {
     width: 85%;
     display: flex;
-    flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    &.register{
-        .logo{
-            display: none;
-        }
-    }
 
     .logo {
         margin-bottom: 60px;
         height: 12%;
         max-width: 228px;
+    }
+
+    &.register{
+        .logo{
+            display: none;
+        }
     }
 
     p {
@@ -49,47 +48,47 @@
             padding-top: 10px;
             padding-bottom: 5px;
             margin-bottom: 15px;
-            border-bottom: 1px solid $greyColor2;
-            border-top: 0px;
-            border-left: 0px;
-            border-right: 0px;
 
-            &.focus{
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            border-bottom: 1px solid $greyColor;
+
+            &.focus {
                 border-bottom-color: $primaryColor;
             }
 
-            img{
+            img {
                 margin-right: 10px;
                 width: 20px;
             }
 
-            input{
+            input {
                 display: flex;
                 align-items: center;
                 width: 100%;
             }
         }
 
-        .buttom{
+        .link {
+            text-align: center;
+            margin-top: 30px;
 
-            margin-top: 20px;
-        };
-    }
+            p {
+                color: $greyColor;
+                margin: 0 0 2px;
+            }
 
-    .link{
-        text-align: center;
-        margin-top: 30px;
-
-        p{
-            color: $greyColor3;
-            margin: 0px 0px 2px;
+            a {
+                color: $primaryColor;
+                font-family: $fontBold;
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
 
-        a{
-            color: $primaryColor;
-            font-family: $fontBold;
-            text-decoration: underline;
-            cursor: pointer;
+        button{
+            margin-top: 20px;
         }
     }
 
@@ -98,19 +97,20 @@
         height: 100%;
         background-color: white;
         background-image: none;
+
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
 
         &.register{
             .logo{
-                display: flex;
+                display: block;
             }
         }
 
         .logo{
-            max-width: none;
-            margin: 0px;
+            max-width: none;           
+            margin: 0;
             min-width: 40%;
         }
 
@@ -118,9 +118,8 @@
             &.error, &.success{
                 max-width: none;
             }
-
         }
-    
+
         form{
             width: 500px;
             border: 0.1em solid $primaryColor;
@@ -128,11 +127,11 @@
             padding: 60px 40px;
 
             .input{
-                    border-bottom-width: 1.5px;
+                border-bottom-width: 1.5px;
 
-                    img{
-                        margin-right: 15px;
-                    }
+                img{
+                    margin-right: 15px;
+                }
             }
 
             button{
