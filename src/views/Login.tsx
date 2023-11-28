@@ -2,9 +2,10 @@ import logo from '../assets/images/logo.svg';
 import loginIcon from '../assets/images/mail.svg';
 import passwordIcon from '../assets/images/key.svg';
 import { PublicInput } from '../components/general/PublicInput';
-import { useState } from 'react';
+import { useContext,useState } from 'react';
 import { LoginServices } from '../services/LoginServices';
 import {Link, useSearchParams} from 'react-router-dom'
+import { AuthorizeContext } from '../../App';
 
 const loginServices = new LoginServices();
 
@@ -14,6 +15,8 @@ export const Login = () => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    const {setToken} = useContext(AuthorizeContext);
 
     const [searchParams] = useSearchParams();
     const success = searchParams.get('success');
@@ -30,7 +33,7 @@ export const Login = () => {
             await loginServices.login({
                 login,
                 password
-            });
+            },setToken);
             setLoading(false);
 
         } catch (e: any) {
