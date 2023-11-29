@@ -7,9 +7,10 @@ type MeetAddEditHeaderProps = {
     setName(s: string): void,
     color: string,
     setColor(s: string): void,
+    isEdit: boolean;
 }
 
-export const MeetAddEditHeader: React.FC<MeetAddEditHeaderProps> = ({ name, color, setName, setColor }) => {
+export const MeetAddEditHeader: React.FC<MeetAddEditHeaderProps> = ({ name, color, setName, setColor, isEdit }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [selected, setSelected] = useState<string | null>(null);
@@ -31,7 +32,7 @@ export const MeetAddEditHeader: React.FC<MeetAddEditHeaderProps> = ({ name, colo
     }
 
     const selectColor = () => {
-        if(selected){
+        if (selected) {
             setColor(selected);
         }
 
@@ -41,7 +42,7 @@ export const MeetAddEditHeader: React.FC<MeetAddEditHeaderProps> = ({ name, colo
     return (
         <>
             <div className="container-user-header">
-                <span>Nova reunião</span>
+                <span>{isEdit ? 'Editar Reunião' : 'Nova reunião'}</span>
                 <div>
                     <input type="text" placeholder='Digite o nome de sua reunião'
                         value={name} onChange={e => setName(e.target.value)} />
@@ -60,8 +61,8 @@ export const MeetAddEditHeader: React.FC<MeetAddEditHeaderProps> = ({ name, colo
                         <div className="container">
                             <span>Selecione a cor da reunião:</span>
                             <div className='colors'>
-                                {colors?.map(c => <div className={c === selected ? 'selected' : ''} style={{ backgroundColor: c }} 
-                                    onClick={() => setSelected(c)}/>)}
+                                {colors?.map(c => <div key={c} className={c === selected ? 'selected' : ''} style={{ backgroundColor: c }}
+                                    onClick={() => setSelected(c)} />)}
                             </div>
                         </div>
                         <div className="actions">
