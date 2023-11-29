@@ -5,7 +5,7 @@ import { PublicInput } from '../components/general/PublicInput';
 import { useContext,useState } from 'react';
 import { LoginServices } from '../services/LoginServices';
 import {Link, useSearchParams} from 'react-router-dom'
-import { AuthorizeContext } from '../../App';
+import { AuthorizeContext } from '../App';
 
 const loginServices = new LoginServices();
 
