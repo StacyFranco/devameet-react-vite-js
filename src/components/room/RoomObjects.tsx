@@ -1,29 +1,34 @@
 import { useState } from 'react';
 import roomIcon from '../../assets/images/room_preview.svg';
+import micOnIcon from '../../assets/images/mic_on.svg';
+import micOffIcon from '../../assets/images/mic_off.svg';
 
 
 type RoomObjectsProps = {
     objects: Array<any>,
-    enterRoom():void
+    connectedUsers: Array<any>,
+    me: any,
+    enterRoom(): void,
+    toggleMute(): void
 }
 
-export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =>{
+export const RoomObjects: React.FC<RoomObjectsProps> = ({ objects, enterRoom, connectedUsers, me, toggleMute }) => {
 
     const [objectsWithWidth, setObjectsWithWidth] = useState<Array<any>>([]);
     const mobile = window.innerWidth <= 992;
 
-    const getImageFromObject = (object: any) => {
+    const getImageFromObject = (object: any, isAvatar: boolean) => {
         if (object && object._id) {
-            const path = `../../assets/objects/${object?.type}/${object.name}${object.orientation? "_"+ object.orientation : ''}.png`;
+            const path = `../../assets/objects/${isAvatar ? 'avatar' : object?.type}/${isAvatar ? object.avatar : object.name}${object.orientation ? "_" + object.orientation : ''}.png`;
             const imageUrl = new URL(path, import.meta.url);
 
 
-            if(mobile){
+            if (mobile) {
                 let img = new Image();
                 img.onload = () => {
-                    const exist = objectsWithWidth.find((o:any) => o.name == object.name);
-                    if(!exist){
-                        const newObjects = [...objectsWithWidth, {name: object.name, width: img.width}];
+                    const exist = objectsWithWidth.find((o: any) => o.name == object.name);
+                    if (!exist) {
+                        const newObjects = [...objectsWithWidth, { name: object.name, width: img.width }];
                         setObjectsWithWidth(newObjects);
                     }
                 }
@@ -36,13 +41,13 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
     }
 
     const getObjectStyle = (object: any) => {
-        const style = {zIndex: object.zindex} as any;
+        const style = { zIndex: object.zindex } as any;
 
-        if(mobile){
-            const obj = objectsWithWidth.find((o:any) => o.name == object.name);
-            if(obj){
+        if (mobile) {
+            const obj = objectsWithWidth.find((o: any) => o.name == object.name);
+            if (obj) {
                 const width = obj.width * 0.5;
-                style.width = width+'px';
+                style.width = width + 'px';
             }
         }
 
@@ -52,7 +57,7 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
     const getClassFromObject = (object: any) => {
         let style = '';
 
-        switch(object.y){
+        switch (object.y) {
             case 0: {
                 style += 'row-one '
                 break;
@@ -89,7 +94,7 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
                 break;
         }
 
-        switch(object.x){
+        switch (object.x) {
             case 0: {
                 style += 'column-one '
                 break;
@@ -129,22 +134,50 @@ export const RoomObjects : React.FC<RoomObjectsProps> = ({objects, enterRoom}) =
         return style;
     }
 
+    const getName = (user: any) => {
+        if (user?.name) {
+            return user.name.split(' ')[0];
+        }
+        return '';
+    }
+
+    const getMutedClass = (user: any) => {
+        if(user?.muted){
+            return 'muted';
+        }
+        return '';
+    }
+
     return (
         <div className="container-objects">
             <div className="center">
                 <div className="grid">
                     {
-                        objects?.map((object: any) => 
-                            <img key={object._id} 
-                                src={getImageFromObject(object)}
+                        objects?.map((object: any) =>
+                            <img key={object._id}
+                                src={getImageFromObject(object, false)}
                                 className={getClassFromObject(object)}
                                 style={getObjectStyle(object)}
-                                />)
+                            />)
                     }
-                    <div className="preview">
-                        <img src={roomIcon} alt="Entrar na sala"/>
+                    {
+                        connectedUsers?.map((user: any) =>
+                            <div key={user._id} className={'user-avatar ' + getClassFromObject(user)}>
+                                <div className={getMutedClass(user)}>
+                                <span className={getMutedClass(user)}>{getName(user)}</span>
+                                </div>
+                                <img
+                                    src={getImageFromObject(user, true)}
+                                    style={getObjectStyle(user)}
+                                />
+                            </div>)
+                    }
+                     { me?.user && me.muted && <img src={micOffIcon} className='audio' onClick={toggleMute}/>}
+                    { me?.user && !me.muted && <img src={micOnIcon} className='audio' onClick={toggleMute}/>}
+                    {(!connectedUsers || connectedUsers?.length === 0) && <div className="preview">
+                        <img src={roomIcon} alt="Entrar na sala" />
                         <button onClick={enterRoom}>Entrar na sala</button>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </div>
