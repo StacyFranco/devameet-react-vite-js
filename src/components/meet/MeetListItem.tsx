@@ -6,20 +6,22 @@ import { useNavigate } from 'react-router-dom';
 
 type MeetListItemProps = {
     meet: any,
-    selectToRemove(id: string):void
+    selected: string,
+    selectMeet(meet: any): void,
+    selectToRemove(id: string): void
 }
 
-export const MeetListItem: React.FC<MeetListItemProps> = ({meet, selectToRemove}) => {
+export const MeetListItem: React.FC<MeetListItemProps> = ({ meet, selectToRemove, selectMeet, selected }) => {
     const mobile = window.innerWidth <= 992;
 
     const navigate = useNavigate();
 
     const goToRoom = () => {
-        navigate('/room/'+ meet?.link);
+        navigate('/room/' + meet?.link);
     }
 
     const goToEdit = () => {
-        navigate('/edit/'+ meet?.id);
+        navigate('/edit/' + meet?.id);
     }
 
     const copyLink = () => {
@@ -28,15 +30,15 @@ export const MeetListItem: React.FC<MeetListItemProps> = ({meet, selectToRemove}
 
     return (
         <div className="container-meet-list-item">
-            <div className="meet">
-                <div className="color" style={{backgroundColor : meet?.color}}/>
+            <div className="meet" onClick={() => !mobile ? selectMeet(meet) : null}>
+                <div className="color" style={{ backgroundColor: meet?.color }} />
                 <span>{meet?.name}</span>
             </div>
             <div className="actions">
-                {mobile && <img src={roomLinkIcon} alt='entrar na reunião' onClick={goToRoom}/>}
-                <img src={copyIcon} alt='copiar link da reunião' onClick={copyLink}/>
-                {!mobile && <img src={editIcon} alt='editar reunião' onClick={goToEdit}/>}
-                <img src={trashIcon} alt='deletar reunião' onClick={() => selectToRemove(meet?.id)}/>
+                {mobile && <img src={roomLinkIcon} alt='entrar na reunião' onClick={goToRoom} />}
+                <img src={copyIcon} alt='copiar link da reunião' onClick={copyLink} />
+                {!mobile && <img src={editIcon} alt='editar reunião' onClick={goToEdit} />}
+                <img src={trashIcon} alt='deletar reunião' onClick={() => selectToRemove(meet?.id)} />
             </div>
         </div>
     );

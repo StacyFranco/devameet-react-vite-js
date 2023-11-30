@@ -1,6 +1,6 @@
 @import './configs.scss';
 
-.container-meet-list-item{
+.container-meet-list-item {
     display: flex;
     width: 100%;
     border-bottom: 0.5px solid $greyColor4;
@@ -8,27 +8,35 @@
     align-items: center;
     justify-content: space-between;
 
-    div{
+    div {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .color{
+        &.meet {
+            cursor: pointer;
+        }
+
+        .color {
             width: 6px;
             height: 32px;
             border-radius: 12px;
             margin-right: 8px;
         }
 
-        span{
+        span {
             font-weight: 700;
             font-size: 12px;
             line-height: 17px;
             color: $greyColor1;
             word-wrap: break-word;
+
+            &.selected {
+                color: $primaryColor3;
+            }
         }
 
-        img{
+        img {
             margin-left: 9px;
             cursor: pointer;
         }

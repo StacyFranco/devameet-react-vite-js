@@ -6,7 +6,12 @@ import { Modal } from "react-bootstrap";
 
 const meetServices = new MeetServices();
 
-export const MeetList = () => {
+type MeetListProps = {
+    setObjects(o: any): void,
+    setLink(s: string): void
+}
+
+export const MeetList:React.FC<MeetListProps> = ({ setObjects, setLink }) => {
 
     const [meets, setMeets] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -33,6 +38,23 @@ export const MeetList = () => {
         setShowModal(false);
     }
 
+    const selectMeetWithObjects = async (meet: any) => {
+        try {
+            const objectsResult = await meetServices.getMeetObjectsById(meet?.id);
+
+            if (objectsResult?.data) {
+                const newObjects = objectsResult?.data?.map((e: any) => {
+                    return { ...e, type: e?.name?.split('_')[0] }
+                });
+                setObjects(newObjects);
+                setSelected(meet?.id);
+                setLink(meet?.link);
+            }
+        } catch (e) {
+            console.log('Ocorreu erro ao listar objetos da reunião:', e);
+        }
+    }
+
     useEffect(() => {
         getMeets();
     }, []);
@@ -56,7 +78,14 @@ export const MeetList = () => {
             <div className="container-meet-list">
                 {meets && meets.length > 0
                     ?
-                    meets.map((meet: any) => <MeetListItem key={meet.id} meet={meet} selectToRemove={selectToRemove} />)
+                    meets.map((meet: any) => 
+                    <MeetListItem 
+                        key={meet.id} 
+                        meet={meet} 
+                        selectToRemove={selectToRemove} 
+                        selectMeet={selectMeetWithObjects}
+                        selected={selected || ''}
+                        />)
                     :
                     <div className="empty">
                         <img src={emptyIcon} />
