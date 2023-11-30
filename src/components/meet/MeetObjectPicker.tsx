@@ -25,8 +25,7 @@ export const MeetObjectPicker: React.FC<MeetObjectPickerType> = ({ image, label,
     console.log(asset)
 
     const selectObject = (o:string) =>{
-        console.log('object:',o)
-       // setObject(o);
+       
         const objectFinal = {
             name: o,
             x: asset.defaultXPosition,

@@ -65,9 +65,7 @@ export const MeetEdit = () => {
     }, [])
 
     const setObject = (object: any) => {
-        console.log("obj on Edit:",object)
         const newIndex = index + 1;
-        console.log("newIndex:",newIndex)
         object._id = newIndex;
         setIndex(newIndex);
 
