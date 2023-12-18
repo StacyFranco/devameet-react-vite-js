@@ -4,6 +4,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+   padding: 0 40px;
 
     .center {
         display: flex;
@@ -149,63 +150,63 @@
                 }
 
                 &.row-two {
-                    top: 5%;
+                    top: -2%;
                 }
 
                 &.row-three {
-                    top: 17%;
+                    top: 10%;
                 }
 
                 &.row-four {
-                    top: 29%;
+                    top: 22%;
                 }
 
                 &.row-five {
-                    top: 41%;
+                    top: 34%;
                 }
 
                 &.row-six {
-                    top: 53%;
+                    top: 46%;
                 }
 
                 &.row-seven {
-                    top: 65%;
+                    top: 59%;
                 }
 
                 &.row-eight {
-                    top: 77%;
+                    top: 70%;
                 }
 
                 &.column-one {
-                    left: -0.5%;
+                    left: -7%;
                 }
 
                 &.column-two {
-                    left: 11.5%;
+                    left: 5%;
                 }
 
                 &.column-three {
-                    left: 23.5%;
+                    left: 18%;
                 }
 
                 &.column-four {
-                    left: 36%;
+                    left: 30%;
                 }
 
                 &.column-five {
-                    left: 48%;
+                    left: 43%;
                 }
 
                 &.column-six {
-                    left: 60%;
+                    left: 55.5%;
                 }
 
                 &.column-seven {
-                    left: 73%;
+                    left: 67%;
                 }
 
                 &.column-eight {
-                    left: 87%;
+                    left: 80%;
                 }
             }
 
@@ -216,6 +217,15 @@
                 left: 88%;
                 z-index: 25;
                 width: 32px;
+            }
+            
+            .video {
+                position: absolute;
+                cursor: pointer;
+                top: 87.5%;
+                left: 76.5%;
+                z-index: 25;
+                width: 38px;
             }
         }
     }
@@ -324,6 +334,79 @@
                     top: 90%;
                     left: 90%;
                     width: 48px;
+                }
+               
+                .video {
+                    top: 89.5%;
+                    left: 80.5%;
+                    width: 58px;
+                }
+
+                .user-avatar {
+
+                    &.row-one {
+                        top: -7%;
+                    }
+    
+                    &.row-two {
+                        top: 5%;
+                    }
+    
+                    &.row-three {
+                        top: 17%;
+                    }
+    
+                    &.row-four {
+                        top: 29%;
+                    }
+    
+                    &.row-five {
+                        top: 41%;
+                    }
+    
+                    &.row-six {
+                        top: 53%;
+                    }
+    
+                    &.row-seven {
+                        top: 65%;
+                    }
+    
+                    &.row-eight {
+                        top: 77%;
+                    }
+    
+                    &.column-one {
+                        left: -0.5%;
+                    }
+    
+                    &.column-two {
+                        left: 11.5%;
+                    }
+    
+                    &.column-three {
+                        left: 23.5%;
+                    }
+    
+                    &.column-four {
+                        left: 36%;
+                    }
+    
+                    &.column-five {
+                        left: 48%;
+                    }
+    
+                    &.column-six {
+                        left: 60%;
+                    }
+    
+                    &.column-seven {
+                        left: 73%;
+                    }
+    
+                    &.column-eight {
+                        left: 87%;
+                    }
                 }
             }
 

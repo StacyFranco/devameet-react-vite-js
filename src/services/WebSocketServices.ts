@@ -43,6 +43,10 @@ class PeerConnectionSession {
     updateUserMute(data: any){
         this.socket.emit('toggl-mute-user', data);
     }
+    
+    updateUserCam(data: any){
+        this.socket.emit('toggl-cam-user', data);
+    }
 
     addPeerConnection(id: string, stream: any, callback: any){
         if(!this.peerConnections[id]){
@@ -84,6 +88,7 @@ class PeerConnectionSession {
     }
 
     async callUser(to: any){
+        console.log(this.peerConnections)
         console.log('callUser to:', to, this.peerConnections[to].iceConnectionState);
         if(this.peerConnections[to].iceConnectionState === 'new'){
             const offer = await this.peerConnections[to].createOffer();
@@ -98,6 +103,7 @@ class PeerConnectionSession {
            // console.log('call-made:', this.peerConnections[data.socket].iceConnectionState);
             
             const selectedPeer = this.peerConnections[data.socket];
+            console.log('call-made 2:',selectedPeer)
             if(selectedPeer){
                 await selectedPeer.setRemoteDescription(new RTCSessionDescription(data.offer));
                 const answer = await selectedPeer.createAnswer();
@@ -111,7 +117,7 @@ class PeerConnectionSession {
         });
     }
 
-    onAnswerMade(callback: any){
+   async onAnswerMade(callback: any){
         this.socket.on('answer-made', async(data: any) => {
             console.log('answer-made:', data.socket);
             await this.peerConnections[data.socket].setRemoteDescription(new RTCSessionDescription(data.answer));

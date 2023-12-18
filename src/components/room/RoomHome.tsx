@@ -26,6 +26,7 @@ export const RoomHome = () => {
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [me, setMe] = useState<any>({});
     const [showModal, setShowModal] = useState(false);
+    const [showModalVideo, setShowModalVideo] = useState(false);
 
     const { link } = useParams();
     const userId = localStorage.getItem('id') || '';
@@ -86,7 +87,7 @@ export const RoomHome = () => {
 
 
     const enterRoom = () => {
-        if(!userMediaStream){
+        if (!userMediaStream) {
             return setShowModal(true);
         }
 
@@ -107,9 +108,9 @@ export const RoomHome = () => {
                     localStorage.setItem('me', JSON.stringify(me));
                 }
 
-                const usersWithoutMe = users.filter((u : any) => u.user !== userId);
-                for(const user of usersWithoutMe){
-                    wsServices.addPeerConnection(user.clientId, userMediaStream, (_stream : any) => {
+                const usersWithoutMe = users.filter((u: any) => u.user !== userId);
+                for (const user of usersWithoutMe) {
+                    wsServices.addPeerConnection(user.clientId, userMediaStream, (_stream: any) => {
                         if (document.getElementById(user.clientId)) {
                             const videoRef: any = document.getElementById(user.clientId);
                             videoRef.srcObject = _stream;
@@ -131,7 +132,7 @@ export const RoomHome = () => {
         wsServices.onAddUser((user: any) => {
             console.log('onAddUser', user);
 
-            wsServices.addPeerConnection(user, userMediaStream, (_stream : any) => {
+            wsServices.addPeerConnection(user, userMediaStream, (_stream: any) => {
                 if (document.getElementById(user)) {
                     const videoRef: any = document.getElementById(user);
                     videoRef.srcObject = _stream;
@@ -141,7 +142,7 @@ export const RoomHome = () => {
             wsServices.callUser(user);
         });
 
-        wsServices.onAnswerMade((socket:any) => wsServices.callUser(socket));
+        wsServices.onAnswerMade((socket: any) => wsServices.callUser(socket));
     }
 
     const toggleMute = () => {
@@ -152,6 +153,16 @@ export const RoomHome = () => {
         }
 
         wsServices.updateUserMute(payload);
+    }
+
+    const toggleCam = () => {
+        const payload = {
+            userId,
+            link,
+            cam: !me.cam
+        }
+
+        wsServices.updateUserCam(payload);
     }
 
     const doMovement = (event: any) => {
@@ -215,7 +226,7 @@ export const RoomHome = () => {
     }
 
     const getUsersWithoutMe = () => {
-        return connectedUsers.filter((u : any) => u.user !== userId);
+        return connectedUsers.filter((u: any) => u.user !== userId);
     }
 
     return (
@@ -228,16 +239,61 @@ export const RoomHome = () => {
                             ?
                             <>
                                 <div className="resume">
-                                    <div onClick={copyLink}>
-                                        <span><strong>Reunião</strong> {link}</span>
-                                        <img src={copyIcon} />
+                                    {!mobile &&
+
+                                        <div className="videos">
+                                            <div className={`video ${me.cam ? '' : 'hiden'}`}>
+                                                <video id='localVideoRef' playsInline autoPlay muted />
+                                            </div>
+                                            {getUsersWithoutMe()?.map((user: any) => (
+                                                <div className={`video ${user.cam ? '' : 'hiden'}`}>
+                                                    <video key={user.clientId} id={user.clientId}
+                                                        playsInline autoPlay muted={user?.muted} width="320" height="240" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    }
+                                    <div className="reuniaoInfo">
+                                        <div onClick={copyLink}>
+                                            <span><strong>Reunião</strong> {link}</span>
+                                            <img src={copyIcon} />
+                                        </div>
+                                        <p style={{ color }}>{name}</p>
                                     </div>
-                                    <p style={{ color }}>{name}</p>
-                                    <audio id='localVideoRef' playsInline autoPlay muted />
-                                    {getUsersWithoutMe()?.map((user: any) =>
-                                        <audio key={user.clientId} id={user.clientId}
-                                            playsInline autoPlay muted={user?.muted}/>
-                                    )}
+
+                                    {/*mostrando botão para tela de video chamada*/}
+                                    {mobile &&
+                                        <>
+                                            <button className="videoBtn" onClick={() => setShowModalVideo(true)}>Videos da chamada</button>
+                                            <Modal
+                                                show={true}
+                                                backdrop={showModalVideo ? true : false}
+                                                className={`container-modal ${showModalVideo ? '' : 'hiden'}`} >
+                                                <Modal.Body>
+                                                    <div className="content">
+                                                        <div className="container">
+                                                            <span>Videos da Chamada</span>
+                                                            <div className='videosModal'>
+                                                                <div className={`video ${me.cam ? '' : 'hiden'}`}>
+                                                                    <video id='localVideoRef' playsInline autoPlay muted />
+                                                                </div>
+                                                                {getUsersWithoutMe()?.map((user: any) => (
+                                                                    <div className={`video ${user.cam ? '' : 'hiden'}`}>
+                                                                        <video key={user.clientId} id={user.clientId}
+                                                                            playsInline autoPlay muted={user?.muted} />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                        <div className="actions">
+                                                            <button onClick={() => setShowModalVideo(false)}>Voltar p/ sala!</button>
+                                                        </div>
+                                                    </div>
+                                                </Modal.Body>
+                                            </Modal>
+                                        </>
+                                    }
+
                                 </div>
                                 <RoomObjects
                                     objects={objects}
@@ -245,7 +301,9 @@ export const RoomHome = () => {
                                     connectedUsers={connectedUsers}
                                     me={me}
                                     toggleMute={toggleMute}
+                                    toggleCam={toggleCam}
                                 />
+
                                 {mobile && me?.user &&
                                     <div className="movement">
                                         <div className="button" onClick={() => doMovement({ key: 'ArrowUp' })}>
@@ -262,10 +320,12 @@ export const RoomHome = () => {
                                                 <img src={iconRight} alt="Andar para direita" />
                                             </div>
                                         </div>
-                                    </div>}
+                                    </div>
+                                }
                             </>
 
                             :
+
                             <div className="empty">
                                 <img src={emptyIcon} />
                                 <p>Reunião não encontrada :/</p>
