@@ -1,27 +1,27 @@
-# React + TypeScript + Vite
+# Devameet Front Web
+Projeto desenvolvido para apresentação do React.js e Vite na formação Devaria 2023. Este projeto é uma aplicação para criar reuniões de video e audio de uma forma interativa, onde é criada uma sala de reuniões e cada participante é um personagem que pode se movimentar pela mesma. O Devameet apresenta as funcionalidades:
+- criar conta
+- escolher avatar
+- criar/deletar reunião
+- editar a sala de reunião (colocar e tirar objetos)
+- iniciar a reunião
+- mutar e retirar video da reunião
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+### Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Vite 4.4.5
+- React 18.2.0
+- socket.io-client 4.7.2
+- bootstrap 5.3.2
+- axios 1.6.1
+- sass 1.69.5
 
-## Expanding the ESLint configuration
+### Configuração do ambiente de desesnvolvimento
+1. Clonar o repositório :git clone <url_git>.
+1. Fazer cópia .env.examplo e renomear o novo arquirvo de .env
+1. Configurar as variaveis de ambiente no arquivo .env
+1. Instale as dependências do projeto npm i.
+1. Execute o comando npm run dev para subir a aplicação.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+#### O projeto com a API de Back End pode ser encontrado em: https://github.com/StacyFranco/devameet-nest-js
